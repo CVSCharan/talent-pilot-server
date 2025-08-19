@@ -45,4 +45,10 @@ router.post(
   n8nController.handleWebhook
 );
 
+router.get(
+  '/responses',
+  passport.authenticate('jwt', { session: false }),
+  n8nController.getN8nResponses
+);
+
 export default router;

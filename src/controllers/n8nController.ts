@@ -51,3 +51,16 @@ export const handleWebhook = async (req: Request, res: Response) => {
     res.status(500).send('Error checking request count.');
   }
 };
+
+export const getN8nResponses = async (req: Request, res: Response) => {
+  const user = req.user as IUser;
+  const userId = user._id as string;
+
+  try {
+    const responses = await n8nService.getN8nResponsesByUserId(userId);
+    res.json(responses);
+  } catch (error) {
+    logger.error('Error retrieving n8n responses', { error, userId });
+    res.status(500).send('Error retrieving n8n responses');
+  }
+};

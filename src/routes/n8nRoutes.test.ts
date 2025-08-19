@@ -11,8 +11,16 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 // Mock the dependencies
 jest.mock('../services/n8nService');
-jest.mock('../models/N8nUserResponse');
 jest.mock('../config/logger');
+jest.mock('../models/N8nUserResponse', () => ({
+  __esModule: true,
+  default: {
+    countDocuments: jest.fn(),
+    prototype: {
+      save: jest.fn(),
+    },
+  },
+}));
 
 const app = express();
 app.use(express.json());

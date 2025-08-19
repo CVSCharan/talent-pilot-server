@@ -25,3 +25,8 @@ export const updateTestimonial = async (id: string, updates: Partial<ITestimonia
 export const deleteTestimonial = async (id: string): Promise<ITestimonial | null> => {
     return Testimonial.findByIdAndDelete(id);
 };
+
+export const hasTestimonial = async (userId: string): Promise<boolean> => {
+    const testimonial = await Testimonial.findOne({ author: userId });
+    return !!testimonial;
+};

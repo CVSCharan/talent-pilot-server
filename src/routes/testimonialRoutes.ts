@@ -80,6 +80,27 @@ router.use(passport.authenticate('jwt', { session: false }));
 
 /**
  * @swagger
+ * /api/testimonials/has-testimonial:
+ *   get:
+ *     summary: Check if user has a testimonial
+ *     tags: [Testimonials]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns true if user has a testimonial, false otherwise
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hasTestimonial:
+ *                   type: boolean
+ */
+router.get('/has-testimonial', testimonialController.hasTestimonial);
+
+/**
+ * @swagger
  * /api/testimonials:
  *   post:
  *     summary: Create a new testimonial

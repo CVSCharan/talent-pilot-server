@@ -67,3 +67,13 @@ export const deleteTestimonial = async (req: Request, res: Response, next: NextF
         next(error);
     }
 };
+
+export const hasTestimonial = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = (req.user as IUser)._id as string;
+        const hasTestimonial = await testimonialService.hasTestimonial(userId);
+        res.json({ hasTestimonial });
+    } catch (error) {
+        next(error);
+    }
+};
