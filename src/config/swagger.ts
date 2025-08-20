@@ -58,11 +58,23 @@ const options: swaggerJsdoc.Options = {
               description: 'The content of the testimonial',
               example: 'This is a great product!'
             },
+            rating: {
+              type: 'number',
+              description: 'The rating of the testimonial',
+              example: 5
+            },
             approved: {
               type: 'boolean',
               description: 'Whether the testimonial is approved',
               example: true
             },
+            designation: {
+                type: 'string',
+                description: 'The designation of the author',
+                example: 'User',
+                required: true,
+                default: 'User'
+            }
           }
         }
       },

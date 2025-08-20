@@ -29,8 +29,8 @@ export const validateLogin = [
 
 export const validateTestimonial = [
     body('content').notEmpty().withMessage('Content is required'),
-    body('author').notEmpty().withMessage('Author is required'),
     body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be an integer between 1 and 5'),
+    body('authorName').if((value, { req }) => !req.user).notEmpty().withMessage('Author name is required for anonymous testimonials.'),
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

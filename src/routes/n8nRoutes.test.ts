@@ -12,15 +12,14 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 // Mock the dependencies
 jest.mock('../services/n8nService');
 jest.mock('../config/logger');
+const mockSave = jest.fn();
 jest.mock('../models/N8nUserResponse', () => ({
   __esModule: true,
-  default: {
-    countDocuments: jest.fn(),
-    prototype: {
-      save: jest.fn(),
-    },
-  },
+  default: jest.fn().mockImplementation(() => ({
+    save: mockSave,
+  })),
 }));
+(N8nUserResponse as any).countDocuments = jest.fn();
 
 const app = express();
 app.use(express.json());
@@ -57,12 +56,13 @@ describe('N8N Routes', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    mockSave.mockClear();
   });
 
   it('should return 200 on successful webhook call', async () => {
-    (N8nUserResponse.countDocuments as jest.Mock).mockResolvedValue(0);
+    (N8nUserResponse as any).countDocuments.mockResolvedValue(0);
     (n8nService.sendToWebhook as jest.Mock).mockResolvedValue({ success: true });
-    (N8nUserResponse.prototype.save as jest.Mock).mockResolvedValue({});
+    mockSave.mockResolvedValue({});
 
     const res = await request(app)
       .post('/api/n8n')
@@ -74,11 +74,11 @@ describe('N8N Routes', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ success: true });
-    expect(N8nUserResponse.prototype.save).toHaveBeenCalledTimes(1);
+    expect(mockSave).toHaveBeenCalledTimes(1);
   });
 
   it('should return 429 if user has reached the request limit', async () => {
-    (N8nUserResponse.countDocuments as jest.Mock).mockResolvedValue(2);
+    (N8nUserResponse as any).countDocuments.mockResolvedValue(2);
 
     const res = await request(app)
       .post('/api/n8n')

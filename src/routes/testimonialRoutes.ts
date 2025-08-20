@@ -52,28 +52,29 @@ router.get('/approved', testimonialController.getApprovedTestimonials);
 
 /**
  * @swagger
- * /api/testimonials/{id}:
- *   get:
- *     summary: Get a testimonial by ID
+ * /api/testimonials:
+ *   post:
+ *     summary: Create a new testimonial
  *     tags: [Testimonials]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The testimonial ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Testimonial'
  *     responses:
- *       200:
- *         description: The testimonial description by id
+ *       201:
+ *         description: The testimonial was successfully created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Testimonial'
- *       404:
- *         description: The testimonial was not found
+ *       400:
+ *         description: Bad request
  */
-router.get('/:id', testimonialController.getTestimonialById);
+router.post('/', validateTestimonial, testimonialController.createTestimonial);
+
+router.get('/:id([0-9a-fA-F]{24})', testimonialController.getTestimonialById);
 
 // Protected routes (admin only, for example)
 router.use(passport.authenticate('jwt', { session: false }));
@@ -99,31 +100,6 @@ router.use(passport.authenticate('jwt', { session: false }));
  */
 router.get('/has-testimonial', testimonialController.hasTestimonial);
 
-/**
- * @swagger
- * /api/testimonials:
- *   post:
- *     summary: Create a new testimonial
- *     tags: [Testimonials]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Testimonial'
- *     responses:
- *       201:
- *         description: The testimonial was successfully created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Testimonial'
- *       400:
- *         description: Bad request
- */
-router.post('/', validateTestimonial, testimonialController.createTestimonial);
 
 /**
  * @swagger
