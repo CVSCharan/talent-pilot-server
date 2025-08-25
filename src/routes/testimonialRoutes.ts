@@ -83,13 +83,13 @@ router.use(passport.authenticate('jwt', { session: false }));
  * @swagger
  * /api/testimonials/has-testimonial:
  *   get:
- *     summary: Check if user has a testimonial
+ *     summary: Check if user has an approved testimonial
  *     tags: [Testimonials]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Returns true if user has a testimonial, false otherwise
+ *         description: Returns true if user has an approved testimonial, false otherwise
  *         content:
  *           application/json:
  *             schema:

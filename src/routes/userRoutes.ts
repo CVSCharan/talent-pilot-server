@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import * as userController from '../controllers/userController';
-import passport from 'passport';
+import { Router } from "express";
+import * as userController from "../controllers/userController";
+import passport from "passport";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ const router = Router();
  *   description: User management
  */
 
-router.use(passport.authenticate('jwt', { session: false }));
+router.use(passport.authenticate("jwt", { session: false }));
 
 /**
  * @swagger
@@ -31,7 +31,7 @@ router.use(passport.authenticate('jwt', { session: false }));
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/', userController.getAllUsers);
+router.get("/", userController.getAllUsers);
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.get('/', userController.getAllUsers);
  *       404:
  *         description: The user was not found
  */
-router.get('/:id', userController.getUserById);
+router.get("/:id", userController.getUserById);
 
 /**
  * @swagger
@@ -91,7 +91,7 @@ router.get('/:id', userController.getUserById);
  *       404:
  *         description: The user was not found
  */
-router.put('/:id', userController.updateUser);
+router.put("/:id", userController.updateUser);
 
 /**
  * @swagger
@@ -114,6 +114,6 @@ router.put('/:id', userController.updateUser);
  *       404:
  *         description: The user was not found
  */
-router.delete('/:id', userController.deleteUser);
+router.delete("/:id", userController.deleteUser);
 
 export default router;

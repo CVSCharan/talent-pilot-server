@@ -11,7 +11,6 @@ export interface IUser extends Document {
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   photoUrl?: string;
-  googleAccessToken?: string;
   googleRefreshToken?: string;
   comparePassword(password: string): Promise<boolean>;
 }
@@ -26,7 +25,6 @@ const UserSchema: Schema = new Schema({
   emailVerificationToken: { type: String },
   passwordResetToken: { type: String },
   passwordResetExpires: { type: Date },
-  googleAccessToken: { type: String },
   googleRefreshToken: { type: String },
 });
 

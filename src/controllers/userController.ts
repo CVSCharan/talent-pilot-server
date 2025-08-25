@@ -73,7 +73,7 @@ export const googleCallback = async (req: Request, res: Response): Promise<void>
         callbackUrl: req.originalUrl,
         headers: req.headers.host,
       });
-      const user = req.user as IUser;
+      const user = req.user as IUser & { accessToken?: string };
 
       if (!user) {
         // This case should ideally be handled by the Passport middleware,
@@ -93,8 +93,9 @@ export const googleCallback = async (req: Request, res: Response): Promise<void>
 
       // Ensure token is properly encoded for URL
       const encodedToken = encodeURIComponent(token);
+      const accessToken = user.accessToken ? encodeURIComponent(user.accessToken) : '';
       // Redirect with token as query parameter
-      const redirectUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/auth/success?token=${encodedToken}`;
+      const redirectUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/auth/success?token=${encodedToken}&accessToken=${accessToken}`;
       logger.debug(`Redirecting to: ${redirectUrl}`);
 
       res.redirect(redirectUrl);

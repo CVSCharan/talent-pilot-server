@@ -6,6 +6,7 @@ import { IUser } from "../models/User";
 import * as authService from "../services/authService";
 import * as emailService from "../services/emailService";
 import * as userController from "../controllers/userController";
+import * as authController from "../controllers/authController";
 import { validateSignup, validateLogin } from "../middlewares/validation";
 import dotenv from "dotenv";
 
@@ -308,8 +309,15 @@ router.get(
         return next(err);
       }
       if (!user) {
-        const message = info.message === 'User not registered' ? 'no-account-found' : 'access-denied';
-        return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/auth/error?message=${message}`);
+        const message =
+          info.message === "User not registered"
+            ? "no-account-found"
+            : "access-denied";
+        return res.redirect(
+          `${
+            process.env.FRONTEND_URL || "http://localhost:3000"
+          }/auth/error?message=${message}`
+        );
       }
       req.user = user;
       next();
@@ -353,5 +361,25 @@ router.get(
  *         description: Successfully logged out
  */
 router.post("/logout", userController.logout);
+
+/**
+ * @swagger
+ * /api/auth/refresh-token:
+ *   post:
+ *     summary: Refresh the Google access token
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a new access token
+ *       401:
+ *         description: Unauthorized
+ */
+router.post(
+  "/refresh-token",
+  passport.authenticate("jwt", { session: false }),
+  authController.refreshAccessToken
+);
 
 export default router;

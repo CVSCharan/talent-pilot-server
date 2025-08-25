@@ -39,10 +39,9 @@ passport.use(
 
                 if (user) {
                     // User already exists, log them in
-                    user.googleAccessToken = accessToken;
                     user.googleRefreshToken = refreshToken;
                     await user.save();
-                    return done(null, user);
+                    return done(null, { ...user.toObject(), accessToken });
                 }
 
                 user = await User.findOne({ email: profile.emails![0].value });
@@ -54,10 +53,9 @@ passport.use(
                     user.displayName = profile.displayName;
                     user.photoUrl = profile.photos![0].value;
                     user.isVerified = true;
-                    user.googleAccessToken = accessToken;
                     user.googleRefreshToken = refreshToken;
                     await user.save();
-                    return done(null, user);
+                    return done(null, { ...user.toObject(), accessToken });
                 }
 
                 if (isRegistering) {
@@ -68,11 +66,10 @@ passport.use(
                         email: profile.emails![0].value,
                         photoUrl: profile.photos![0].value,
                         isVerified: true,
-                        googleAccessToken: accessToken,
                         googleRefreshToken: refreshToken,
                     });
                     await newUser.save();
-                    return done(null, newUser);
+                    return done(null, { ...newUser.toObject(), accessToken });
                 } else {
                     // If logging in and user doesn't exist, fail
                     return done(null, false, { message: 'User not registered' });

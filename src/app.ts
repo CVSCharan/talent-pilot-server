@@ -4,6 +4,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import path from "path";
 import helmet from "helmet";
+import fs from "fs";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import connectDB from "./config/db";
@@ -22,6 +23,12 @@ import "./config/passport"; // Import passport configuration
 
 const app = express();
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "..", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
 // Connect to MongoDB
 connectDB();
 
@@ -37,8 +44,6 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "fallback-secret-key",
@@ -71,6 +76,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/n8n", n8nRoutes);
+
+// Body parsers - placed after routes that might handle multipart/form-data
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Serve index.html for the root route
 app.get("/", (req, res) => {

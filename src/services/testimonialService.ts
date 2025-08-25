@@ -27,6 +27,6 @@ export const deleteTestimonial = async (id: string): Promise<ITestimonial | null
 };
 
 export const hasTestimonial = async (userId: string): Promise<boolean> => {
-    const testimonial = await Testimonial.findOne({ author: userId });
+    const testimonial = await Testimonial.findOne({ author: userId, approved: true });
     return !!testimonial;
 };

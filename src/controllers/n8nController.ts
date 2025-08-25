@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as n8nService from '../services/n8nService';
+import { n8nService } from '../services/n8nService';
 import fs from 'fs';
 import N8nUserResponse from '../models/N8nUserResponse';
 import { IUser } from '../models/User';
@@ -28,9 +28,12 @@ export const handleWebhook = async (req: Request, res: Response) => {
     try {
       const result = await n8nService.sendToWebhook(req.body, filePath);
 
+      // Assuming the result is an array and we are interested in the first element
+      const responseData = result[0];
+
       const newResponse = new N8nUserResponse({
         user: userId,
-        responseData: result,
+        ...responseData,
       });
       await newResponse.save();
 
