@@ -28,15 +28,11 @@ export const handleWebhook = async (req: Request, res: Response) => {
     try {
       const result = await n8nService.sendToWebhook(req.body, filePath);
 
-      // Assuming the result is an array and we are interested in the first element
-      const responseData = result[0];
-
       const newResponse = new N8nUserResponse({
         user: userId,
-        ...responseData,
+        ...result,
       });
       await newResponse.save();
-
       res.json(result);
     } catch (error) {
       logger.error('Error processing webhook', { error, userId, file: req.file.originalname });

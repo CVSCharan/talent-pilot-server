@@ -1,8 +1,8 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { IUser } from './User';
+import mongoose, { Document, Schema } from "mongoose";
+import { IUser } from "./User";
 
 export interface IN8nUserResponse extends Document {
-  user: IUser['_id'];
+  user: IUser["_id"];
   jdContext: {
     jobDescription: string;
     jobDetails: {
@@ -74,76 +74,88 @@ export interface IN8nUserResponse extends Document {
   createdAt: Date;
 }
 
-const N8nUserResponseSchema: Schema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  jdContext: {
-    jobDescription: { type: String, required: true },
-    jobDetails: {
-      positionTitle: { type: String, required: true },
-      requiredSkills: { type: [String], required: true },
-      coreResponsibilities: { type: [String], required: true },
-      seniorityLevel: { type: String, required: true },
-      preferredLocation: { type: String, required: true },
-      minimumExperience: { type: String, required: true },
-      educationRequirement: { type: String, required: true },
-      bonusSkills: { type: [String], required: true },
+const N8nUserResponseSchema: Schema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    jdContext: {
+      jobDescription: { type: String, required: false },
+      jobDetails: {
+        positionTitle: { type: String, required: false },
+        requiredSkills: { type: [String], required: false },
+        coreResponsibilities: { type: [String], required: false },
+        seniorityLevel: { type: String, required: false },
+        preferredLocation: { type: String, required: false },
+        minimumExperience: { type: String, required: false },
+        educationRequirement: { type: String, required: false },
+        bonusSkills: { type: [String], required: false },
+      },
+    },
+    candidateResume: {
+      candidateDetails: {
+        "Candidate Name": { type: String, required: false },
+        "Candidate Email": { type: String, required: false },
+        "Candidate Contact": { type: String, required: false },
+        Education: [
+          {
+            Degree: { type: String, required: false },
+            Institution: { type: String, required: false },
+            "Graduation Year": { type: String, required: false },
+          },
+        ],
+        "Technical Skills": {
+          "Programming Languages": { type: [String], required: false },
+          Frameworks: { type: [String], required: false },
+          Databases: { type: [String], required: false },
+          Tools: { type: [String], required: false },
+          Methodologies: { type: [String], required: false },
+        },
+        Experience: [
+          {
+            "Job Title": { type: String, required: false },
+            Company: { type: String, required: false },
+            "Start Date": { type: String, required: false },
+            "End Date": { type: String, required: false },
+ },
+        ],
+        Projects: [
+          {
+            "Project Name": { type: String, required: false },
+            Objective: { type: String, required: false },
+            "Technologies Used": { type: [String], required: false },
+            Outcome: { type: String, required: false },
+          },
+        ],
+        "Certifications & Training": [
+          {
+            Certification: { type: String, required: false },
+            "Issuing Organization": { type: String, required: false },
+            Year: { type: String, required: false },
+          },
+        ],
+        "Other Notable Information": {
+          Awards: { type: [String], required: false },
+          Publications: { type: [String], required: false },
+          "Volunteer Work": { type: [String], required: false },
+          "Open Source Contributions": { type: [String], required: false },
+          Languages: { type: [String], required: false },
+        },
+        "Resume Summary": { type: String, required: false },
+      },
+    },
+    results: {
+      final_score: { type: String, required: false },
+      confidence_score: { type: String, required: false },
+      recommendation: { type: String, required: false },
+      justification: { type: String, required: false },
+      key_strengths: { type: [String], required: false },
+      key_gaps: { type: [String], required: false },
+      hard_blockers: { type: [String], required: false },
     },
   },
-  candidateResume: {
-    candidateDetails: {
-      "Candidate Name": { type: String, required: true },
-      "Candidate Email": { type: String, required: true },
-      "Candidate Contact": { type: String, required: true },
-      Education: [{
-        Degree: { type: String, required: true },
-        Institution: { type: String, required: true },
-        "Graduation Year": { type: String, required: true },
-      }],
-      "Technical Skills": {
-        "Programming Languages": { type: [String], required: true },
-        Frameworks: { type: [String], required: true },
-        Databases: { type: [String], required: true },
-        Tools: { type: [String], required: true },
-        Methodologies: { type: [String], required: true },
-      },
-      Experience: [{
-        "Job Title": { type: String, required: true },
-        Company: { type: String, required: true },
-        "Start Date": { type: String, required: true },
-        "End Date": { type: String, required: true },
-        Responsibilities: { type: [String], required: true },
-        Achievements: { type: [String], required: true },
-      }],
-      Projects: [{
-        "Project Name": { type: String, required: true },
-        Objective: { type: String, required: true },
-        "Technologies Used": { type: [String], required: true },
-        Outcome: { type: String, required: true },
-      }],
-      "Certifications & Training": [{
-        Certification: { type: String, required: true },
-        "Issuing Organization": { type: String, required: true },
-        Year: { type: String, required: true },
-      }],
-      "Other Notable Information": {
-        Awards: { type: [String], required: true },
-        Publications: { type: [String], required: true },
-        "Volunteer Work": { type: [String], required: true },
-        "Open Source Contributions": { type: [String], required: true },
-        Languages: { type: [String], required: true },
-      },
-      "Resume Summary": { type: String, required: true },
-    },
-  },
-  results: {
-    final_score: { type: String, required: true },
-    confidence_score: { type: String, required: true },
-    recommendation: { type: String, required: true },
-    justification: { type: String, required: true },
-    key_strengths: { type: [String], required: true },
-    key_gaps: { type: [String], required: true },
-    hard_blockers: { type: [String], required: true },
-  },
-}, { timestamps: { createdAt: true, updatedAt: false } });
+  { timestamps: { createdAt: true, updatedAt: false } }
+);
 
-export default mongoose.model<IN8nUserResponse>('N8nUserResponse', N8nUserResponseSchema);
+export default mongoose.model<IN8nUserResponse>(
+  "N8nUserResponse",
+  N8nUserResponseSchema
+);
