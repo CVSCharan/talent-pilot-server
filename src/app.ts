@@ -70,16 +70,15 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 // Routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/n8n", n8nRoutes);
-
-// Body parsers - placed after routes that might handle multipart/form-data
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Serve index.html for the root route
 app.get("/", (req, res) => {

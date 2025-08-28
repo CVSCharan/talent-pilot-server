@@ -53,11 +53,35 @@ export interface IN8nUserResponse extends Document {
         Year: string;
       }[];
       "Other Notable Information": {
-        Awards: string[];
-        Publications: string[];
-        "Volunteer Work": string[];
-        "Open Source Contributions": string[];
-        Languages: string[];
+        Awards: {
+          name: string;
+          issuer: string;
+          year: string;
+          description: string;
+        }[];
+        Publications: {
+          title: string;
+          journalOrVenue: string;
+          year: string;
+          authors: string[];
+          doiOrLink: string;
+        }[];
+        "Volunteer Work": {
+          role: string;
+          organization: string;
+          duration: string;
+          description: string;
+        }[];
+        "Open Source Contributions": {
+          projectName: string;
+          repository: string;
+          contributionDescription: string;
+          link: string;
+        }[];
+        Languages: {
+          language: string;
+          proficiency: string;
+        }[];
       };
       "Resume Summary": string;
     };
@@ -115,7 +139,7 @@ const N8nUserResponseSchema: Schema = new Schema(
             Company: { type: String, required: false },
             "Start Date": { type: String, required: false },
             "End Date": { type: String, required: false },
- },
+          },
         ],
         Projects: [
           {
@@ -133,11 +157,45 @@ const N8nUserResponseSchema: Schema = new Schema(
           },
         ],
         "Other Notable Information": {
-          Awards: { type: [String], required: false },
-          Publications: { type: [String], required: false },
-          "Volunteer Work": { type: [String], required: false },
-          "Open Source Contributions": { type: [String], required: false },
-          Languages: { type: [String], required: false },
+          Awards: [
+            {
+              name: { type: String, required: false },
+              issuer: { type: String, required: false },
+              year: { type: String, required: false },
+              description: { type: String, required: false },
+            },
+          ],
+          Publications: [
+            {
+              title: { type: String, required: false },
+              journalOrVenue: { type: String, required: false },
+              year: { type: String, required: false },
+              authors: { type: [String], required: false },
+              doiOrLink: { type: String, required: false },
+            },
+          ],
+          "Volunteer Work": [
+            {
+              role: { type: String, required: false },
+              organization: { type: String, required: false },
+              duration: { type: String, required: false },
+              description: { type: String, required: false },
+            },
+          ],
+          "Open Source Contributions": [
+            {
+              projectName: { type: String, required: false },
+              repository: { type: String, required: false },
+              contributionDescription: { type: String, required: false },
+              link: { type: String, required: false },
+            },
+          ],
+          Languages: [
+            {
+              language: { type: String, required: false },
+              proficiency: { type: String, required: false },
+            },
+          ],
         },
         "Resume Summary": { type: String, required: false },
       },
